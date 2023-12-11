@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="TriageChart.css"> 
+    <script src="TriageCore.js"></script>
+
+    <title>Triage</title>
+</head>
+<body onload="init()">
+    <div class="body_background">
+        <input id="painLevel" type="range" min="0" max="10" value="5" step="1" aria-label="Select Pain Level">
+        <p class = pain_slider_message>please enter a level of pain ranging from 0 to 10, 0 being no pain and 10 being unbearable pain</p>
+        <p class = pain_slider_0>0</p>
+        <p class = pain_slider_10>10</p>
+    </div>
+
+    <div class = "scroll-box">
+        <button class = "scrollButton" onclick="toggleSymptoms('Amputation')">Amputation</button>
+        <button class = "scrollButton" onclick="toggleSymptoms('Anaphylaxis')">Anaphylaxis</button>
+        <button class = "scrollButton" onclick="toggleSymptoms('Broken Bone')">Broken Bone</button>
+        <button class = "scrollButton" onclick="toggleSymptoms('Congestion')">Congestion</button>
+        <button class = "scrollButton" onclick="toggleSymptoms('Coughing')">Coughing</button>
+        <button class = "scrollButton" onclick="toggleSymptoms('Discomfort')">Discomfort</button>
+        <button class = "scrollButton" onclick="toggleSymptoms('Dislocated Joint')">Dislocated Joint</button>
+        <button class = "scrollButton" onclick="toggleSymptoms('Fever')">Fever</button>
+        <button class = "scrollButton" onclick="toggleSymptoms('Heat Stroke')">Heat Stroke</button>
+        <button class = "scrollButton" onclick="toggleSymptoms('Hypothermia')">Hypothermia</button>
+        <button class = "scrollButton" onclick="toggleSymptoms('Major Bleeding')">Major Bleeding</button>
+        <button class = "scrollButton" onclick="toggleSymptoms('Minor Bleeding')">Minor Bleeding</button>
+        <button class = "scrollButton" onclick="toggleSymptoms('Major Bruising')">Major Bruising</button>
+        <button class = "scrollButton" onclick="toggleSymptoms('Muscle Pain')">Muscle Pain</button>
+        <button class = "scrollButton" onclick="toggleSymptoms('Overdose')">Overdose</button>
+        <button class = "scrollButton" onclick="toggleSymptoms('Pain')">Pain</button>
+        <button class = "scrollButton" onclick="toggleSymptoms('Poison')">Poison</button>
+        <button class = "scrollButton" onclick="toggleSymptoms('Weird Lump')">Weird Lump</button>
+    </div>
+    <p class="scrollBox">Plese select the symotoms that you are feeling</p>
+
+    <div>
+    <textarea class="bodyPartChosen" id="bodyPartChosen" rows="3" readonly aria-label="Body part chosen"></textarea>
+    <textarea class="symptomsChosen" id="symptomsChosen" rows="3" readonly aria-label="Symptoms Chosen"></textarea>
+
+    <header> Hospital Triage</header>
+    <button id="Head" class="body-part" type="button" onclick="toggleButton('Head','Head')">_</button>
+    <button id="Body" class="body-part" type="button" onclick="toggleButton('Body','Body')">_</button>
+    <button id="Right-Leg" class="body-part" type="button" onclick="toggleButton('Right-Leg','Right Leg')">_</button>
+    <button id="Left-Leg" class="body-part" type="button" onclick="toggleButton('Left-Leg', 'Left Leg')">_</button>
+    <button id="Right-Arm" class="body-part" type="button" onclick="toggleButton('Right-Arm', 'Right Arm')">_</button>
+    <button id="Left-Arm" class="body-part" type="button" onclick="toggleButton('Left-Arm', 'Left Arm')">_</button>
+    <p class="bodyBox">Choose above where you are feeling pain</p>
+    <p class="chosenPart">Above is (are) the area(s) in which you are feeling unwell</p>
+    <p class="chosenSymptom">Below is (are) the symptom(s) in which caused your visit</p>
+    </div>
+
+    <button id="sendButton" class = "sendButton" type="button" onclick="toggleSendButton()">Click here to submit</button>
+</body>
+</html>

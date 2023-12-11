@@ -1,0 +1,266 @@
+.body_background {
+  background-color: rgb(255, 255, 255);;
+    border: 5px solid black;
+    padding: 20px; 
+    width: 195px;
+    height: 452px; 
+    position: absolute;
+    top: 123px;
+    left: 40px;
+}
+
+.body-part {
+  background-size: cover;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+}
+
+.body-part:hover,
+.body-part:active {
+  transform: translateY(2px);
+}
+
+#Head {
+  background-image: url('resources/Head.png');
+  width: 53px;
+  height: 81px;
+  top: 129px;
+  left: 137px;
+}
+
+#Body {
+  background-image: url('resources/Body.png');
+  width: 118px;
+  height: 174.5px;
+  top: 210px;
+  left: 100px;
+}
+
+#Left-Leg {
+  background-image: url('resources/LeftLeg.png');
+  width: 55px;
+  height: 234px;
+  top: 384px;
+  left: 164px;
+}
+
+#Right-Leg {
+  background-image: url('resources/RightLeg.png');
+  width: 53px;
+  height: 235px;
+  top: 384px;
+  left: 106px;
+  padding: 0; 
+}
+
+#Left-Arm {
+  background-image: url('resources/LeftArm.png');
+  width: 62px;
+  height: 208px;
+  top: 220px;
+  left: 218px;
+}
+
+#Right-Arm {
+  background-image: url('resources/RightArm.png');
+  width: 55px;
+  height: 205px;
+  top: 225px;
+  left: 45px;
+}
+
+body input[type="range"] {
+  width: 300px;
+  position: absolute;
+  top: 400px;
+  left: 260px;
+}
+
+body input[type="range"]::-webkit-slider-thumb {
+  background-color: rgb(160, 2, 2);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-top: -4px;
+}
+
+body input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 8px;
+  cursor: pointer;
+  background: #bbbbbb;
+  border-radius: 2px;
+}
+
+body {
+  transition: background-color 0.5s ease; 
+  background-image: url(resources/GreyBackground.jpg);
+}
+
+.pain_slider_message{
+  position: absolute;
+  top: 410px;
+  left: 260px;
+  width: 320px;
+  color: rgb(223, 223, 223);
+}
+
+.bodyBox{
+  position: absolute;
+  top: 610px;
+  left: 40px;
+  width: 320px;
+  color: rgb(223, 223, 223);
+}
+
+.pain_slider_0{
+  position: absolute;
+  top: 370px;
+  left: 267px;
+  color: rgb(223, 223, 223);
+}
+
+.pain_slider_10{
+  position: absolute;
+  top: 370px;
+  left: 545px;
+  color: rgb(223, 223, 223);
+}
+
+.scroll-box {
+  width: 290px; 
+  height: 300px; 
+  overflow-y: scroll; 
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+  top: 123px;
+  left: 300px;
+  border: 5px solid black;
+}
+
+.scrollButton {
+  display: block;
+  width: 100%; 
+  padding: 10px;
+  margin: 5px 0;
+  text-align: left;
+  background-color: #798080;
+  border: 2px solid #000000;
+  cursor: pointer;
+}
+
+.scrollBox{
+  position: absolute;
+  top: 440px;
+  left: 302px;
+  color: rgb(223, 223, 223);
+}
+
+.scrollButton:hover {
+  background-color: #e0e0e0;
+}
+
+header{
+  font-size: 64px;
+  color: rgb(223, 223, 223);
+}
+.bodyPartChosen {
+  background-color: rgb(255, 255, 255);;
+  border: 5px solid black;
+  padding: 20px; 
+  width: 195px;
+  height: 50px; 
+  position: absolute;
+  top: 123px;
+  left: 800px;
+}
+.symptomsChosen {
+  background-color: rgb(255, 255, 255);
+  border: 5px solid black;
+  padding: 20px; 
+  width: 195px;
+  height: 50px; 
+  position: absolute;
+  top: 300px;
+  left: 800px;
+}
+
+.chosenPart{
+  position: absolute;
+  top: 207px;
+  left: 800px;
+  color: rgb(158, 158, 158);
+}
+.chosenSymptom{
+  position: absolute;
+  top: 390px;
+  left: 800px;
+  color: rgb(158, 158, 158);
+}
+
+.sendButton{
+  position: absolute;
+  top: 500px;
+  left: 800px;
+  background-color: #798080;
+  border: 2px solid rgb(160, 2, 2);
+  border-radius: 12px;
+  font-size: 16px;
+}
+
+.sendButton:active {
+  transform: translateY(2px);
+}
+
+.centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+}
+
+.usernameInput,
+.passwordInput {
+  width: 300px;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 10px;
+  border: 2px solid rgb(0, 0, 0);
+}
+#patientInputs {
+  display: none;
+  text-align: center;
+}
+
+#patientInputs input {
+  width: 310px;
+  box-sizing: border-box;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 10px;
+  display: block; 
+  margin: 10px; 
+  border: 2px solid rgb(0, 0, 0);
+}
+
+.switchButton,
+.submitUserPass {
+  width: 300px;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 10px;
+  background-color: #b6bbbb;
+  border: 2px solid rgb(160, 2, 2);
+  border-radius: 12px;
+}
+
+.switchButton:active {
+  transform: translateY(2px);
+}
+
+.submitUserPass:active {
+  transform: translateY(2px);
+}

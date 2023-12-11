@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="TriageChart.css"> 
+    <title>Triage - Login</title>
+    <script src="TriageCore.js"></script>
+
+</head>
+<header>Hospital Triage</header>
+<body>
+    <div class="centered">
+        <input type="text" class="usernameInput" placeholder="Username" id="usernameInput">
+        <input type="password" class="passwordInput" placeholder="Password" id="passwordInput">
+
+        <div id="patientInputs">
+            <input type="text" placeholder="Name">
+            <input type="text" placeholder="Age">
+            <input type="text" placeholder="Gender">
+            <input type="text" placeholder="Health Card Number">
+        </div>
+
+        <button class="switchButton" id="switchButton" onclick="switchUserType()">Hospital Staff</button>
+        <button class="submitUserPass" id="submitUserPass" onclick="submitUserPass()">Submit</button>
+       
+    </div>
+</body>
+</html>
