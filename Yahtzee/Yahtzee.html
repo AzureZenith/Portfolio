@@ -1,0 +1,451 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <style>
+            *{
+                font-family: monospace;
+                font-size: 24px;
+                box-sizing: border-box;
+            }
+            /* Create two equal columns that floats next to each other */
+            .column
+            {
+                float: left;
+                width: 50%;
+                padding: 10px;
+            }
+            /* Clear floats after the columns */
+            .row:after
+            {
+                content: "";
+                display: table;
+                clear: both;
+            }
+        </style>
+    </head>
+
+    <body onload="load()">
+        <script>
+            //This script focuses on handling the dice.
+            //scripts for handling scoring are placed closer to the scorecard.
+
+            //These are objects, for user interactions.
+            const dice=[0,0,0,0,0];
+            //vals stores numerical values for scoring, but nothing else.
+            //It can also be reorganized for calculations.
+            const vals=[0,0,0,0,0];
+            var rollsRemaining=3;
+            function load()
+            {
+                //alert("loading...");
+                document.getElementById("roll_button").setAttribute("onclick","rollAll()");
+                for(var i=0;i<5;i++)
+                {
+                    //setting up the dice[i]...
+                    dice[i]=new Object();
+                    dice[i].value=0;
+                    dice[i].lockedIn=false;
+                    dice[i].toString=function()
+                    {
+                        var result ="";
+                        if(this.lockedIn)
+                        {
+                            result+=String.fromCharCode(8194)+String.fromCharCode(8194);
+                        }
+                        if(this.value>=1 && this.value<=6)
+                        {
+                            result+= String.fromCharCode(9855+this.value);
+                        }
+                        else
+                        {
+                            result+= "-";
+                        }
+                        if(!this.lockedIn)
+                        {
+                            result+=String.fromCharCode(8194)+String.fromCharCode(8194);
+                        }
+                        return result;
+                    };
+                    dice[i].roll=function()
+                    {
+                        if(! this.lockedIn)
+                        {
+                            this.value=1+Math.floor(Math.random() * 6);
+                        }
+                        //Randomize lockedIn to test rendering.
+                        //this.lockedIn=(Math.random()<0.5);
+                    };
+                    dice[i].toggle=function()
+                    {
+                        if(this.lockedIn)
+                        {this.lockedIn=false;}
+                        else
+                        {this.lockedIn=true;}
+                    };
+                    //setting up corresponding element in HTML doc...
+                    document.getElementById("dice").children[2*i].index=i;
+                    //alert("updated index for die" + i + " to " + document.getElementById("dice").children[2*i].index);
+                    document.getElementById("dice").children[2*i].onclick
+                        =function(){dice[this.index].toggle();render();};
+                    //alert("updated onclick for die" + i);
+                }
+                //I made more than 5 attempts to do this with a loop.
+                //At which point, it's easier to do all five cases.
+                /*document.getElementById("dice").children[0].onclick = function()
+                {dice[0].toggle();render();};
+                document.getElementById("dice").children[2].onclick = function()
+                {dice[1].toggle();render();};
+                document.getElementById("dice").children[4].onclick = function()
+                {dice[2].toggle();render();};
+                document.getElementById("dice").children[6].onclick = function()
+                {dice[3].toggle();render();};
+                document.getElementById("dice").children[8].onclick = function()
+                {dice[4].toggle();render();};*/
+
+                //After loading dice manager, load scorecard manager.
+                //alert("Dice manager loaded successfully.");
+                loadScorecard();
+                render();
+            }
+            function render()
+            {
+                document.getElementById("sorted").innerHTML="Rolls remaining: "+rollsRemaining;
+                /*document.getElementById("straight").innerHTML
+                    ="┏━━━┓<br>"
+                    +"┃"+alignRight(sum(vals),3)+"┃<br>"
+                    +"┗━━━┛<br>";*/
+                for(var i=0;i<5;i++)
+                {
+                    document.getElementById("dice").children[i*2].innerHTML=dice[i].toString();
+                }
+                if(rollsRemaining<=0 || dice.every(checkLock))
+                {
+                    document.getElementById("roll_button").disabled=true;
+                }
+                else
+                {
+                    document.getElementById("roll_button").disabled=false;
+                }
+                renderScorecard();
+            }
+            function rollAll()
+            {
+                if(rollsRemaining>0)
+                {
+                    for(var i=0;i<5;i++)
+                    {
+                        dice[i].roll();
+                        vals[i]=dice[i].value;
+                    }
+                    vals.sort();
+                    rollsRemaining--;
+                    render();
+                }
+            }
+            function resetDice()
+            {
+                //alert("resetting dice")
+                for(var i=0;i<5;i++)
+                {
+                    dice[i].value=0;
+                    dice[i].lockedIn=false;
+                    vals[i]=0;
+                }
+                render();
+            }
+            function checkLock(die){return die.lockedIn;}
+            function isSmallStraight(input) {
+            
+                input.sort((a,b)=>a-b);
+                for(var i=0;i<5;i++)
+                {
+                    document.getElementById("sorted").innerHTML+=String.fromCharCode(9855+input[i]);
+                }
+                const straights = ["1234", "2345", "3456"];
+                const diceString = input.join("");
+                return straights.some(straight => diceString.includes(straight));
+            }
+        </script>
+        <div class="column">
+            <div id="dice">
+                <!-- I really wanted to automate the instanciation of these elements,
+                    but it kept messing up all kinds of other parts of the script.
+                    Eventually I gave up. Hardcoding 5 paragraph elements is way easier -->
+                <button id="die0"></button><br>
+                <button id="die1"></button><br>
+                <button id="die2"></button><br>
+                <button id="die3"></button><br>
+                <button id="die4"></button>
+            </div>
+            <button id="roll_button">
+                Roll dice
+            </button>
+            <p id="sorted">
+            </p>
+            <p id="straight">
+            </p>
+        </div>
+        <script>
+            var numToCheck=-1;
+            function loadScorecard()
+            {
+                const ones=document.getElementById("ones");
+                const twos=document.getElementById("twos");
+                const threes=document.getElementById("threes");
+                const fours=document.getElementById("fours");
+                const fives=document.getElementById("fives");
+                const sixes=document.getElementById("sixes");
+                //alert("loading scorecard...");
+                //alert(ones);
+                //alert(document.getElementById("ones"));
+                ones.lockedIn=false;
+                ones.score=-1;
+                //alert("in loadScoreCard, nothing calculated yet.");
+                ones.prospectiveScore=sumWhere(vals,1);
+                //alert("in loadScoreCard, prospectiveScore initialized to "+ones.prospectiveScore);
+                ones.onmouseenter=function()
+                {
+                    if(ones.prospectiveScore>0&& !ones.lockedIn)
+                    {
+                        ones.style="color: white;background: black;";
+                        ones.innerHTML=alignRight(ones.prospectiveScore,3);
+                    }
+                };
+                ones.onmouseleave=function()
+                {
+                    ones.style="color: black; background: white;";
+                    ones.innerHTML=alignRight(ones.score,3);
+                };
+                ones.onclick=function()
+                {
+                    //alert("click detected.\nones: "+ones+"\nprospectiveScore: "+ones.prospectiveScore+"\nlockedIn: "+ones.lockedIn);
+                    if(ones.prospectiveScore>0&& !ones.lockedIn)
+                    {
+                        //alert("So score should be updated");
+                        ones.score=ones.prospectiveScore;
+                        ones.lockedIn=true;
+                        //alert("locked in.");
+                        rollsRemaining=3;
+                        //alert("you have "+rollsRemaining+" rolls remaining.");
+                        resetDice();
+                        //alert("dice are now"+dice);
+                        //alert("vals are now"+dice);
+                    }
+                }
+                //repeating for twos:
+                twos.lockedIn=false;
+                twos.score=-1;
+                twos.prospectiveScore=sumWhere(vals,2);
+                twos.onmouseenter=function()
+                {
+                    //alert("mouse entered twos\nprospective score: "+twos.prospectiveScore);
+                    if(twos.prospectiveScore>0&& !twos.lockedIn)
+                    {
+                        twos.style="color: white;background: black;";
+                        twos.innerHTML=alignRight(twos.prospectiveScore,3);
+                    }
+                };
+                twos.onmouseleave=function()
+                {
+                    twos.style="color: black; background: white;";
+                    twos.innerHTML=alignRight(twos.score,3);
+                };
+                twos.onclick=function()
+                {
+                    //alert("click detected.\nones: "+twos+"\nprospectiveScore: "+twos.prospectiveScore+"\nlockedIn: "+ones.lockedIn);
+                    if(twos.prospectiveScore>0&& !twos.lockedIn)
+                    {
+                        //alert("So score should be updated");
+                        twos.score=twos.prospectiveScore;
+                        twos.lockedIn=true;
+                        //alert("locked in.");
+                        rollsRemaining=3;
+                        //alert("you have "+rollsRemaining+" rolls remaining.");
+                        resetDice();
+                        //alert("dice are now"+dice);
+                        //alert("vals are now"+dice);
+                    }
+                }
+                threes.lockedIn=false;
+                threes.score=-1;
+                threes.prospectiveScore=sumWhere(vals,3);
+                threes.onmouseenter=function()
+                {
+                    if(threes.prospectiveScore>0&& !threes.lockedIn)
+                    {
+                        threes.style="color: white;background: black;";
+                        threes.innerHTML=alignRight(threes.prospectiveScore,3);
+                    }
+                };
+                threes.onmouseleave=function()
+                {
+                    threes.style="color: black; background: white;";
+                    threes.innerHTML=alignRight(threes.score,3);
+                };
+                threes.onclick=function()
+                {
+                    if(threes.prospectiveScore>0&& !threes.lockedIn)
+                    {
+                        threes.score=threes.prospectiveScore;
+                        threes.lockedIn=true;
+                        rollsRemaining=3;
+                        resetDice();
+                    }
+                }
+                fours.lockedIn=false;
+                fours.score=-1;
+                fours.prospectiveScore=sumWhere(vals,4);
+                fours.onmouseenter=function()
+                {
+                    if(fours.prospectiveScore>0&& !fours.lockedIn)
+                    {
+                        fours.style="color: white;background: black;";
+                        fours.innerHTML=alignRight(fours.prospectiveScore,3);
+                    }
+                };
+                fours.onmouseleave=function()
+                {
+                    fours.style="color: black; background: white;";
+                    fours.innerHTML=alignRight(fours.score,3);
+                };
+                fours.onclick=function()
+                {
+                    if(fours.prospectiveScore>0&& !fours.lockedIn)
+                    {
+                        fours.score=fours.prospectiveScore;
+                        fours.lockedIn=true;
+                        rollsRemaining=3;
+                        resetDice();
+                    }
+                }
+                fives.lockedIn=false;
+                fives.score=-1;
+                fives.prospectiveScore=sumWhere(vals,5);
+                fives.onmouseenter=function()
+                {
+                    if(fives.prospectiveScore>0&& !fives.lockedIn)
+                    {
+                        fives.style="color: white;background: black;";
+                        fives.innerHTML=alignRight(fives.prospectiveScore,3);
+                    }
+                };
+                fives.onmouseleave=function()
+                {
+                    fives.style="color: black; background: white;";
+                    fives.innerHTML=alignRight(fives.score,3);
+                };
+                fives.onclick=function()
+                {
+                    if(fives.prospectiveScore>0&& !fives.lockedIn)
+                    {
+                        fives.score=fives.prospectiveScore;
+                        fives.lockedIn=true;
+                        rollsRemaining=3;
+                        resetDice();
+                    }
+                }
+                sixes.lockedIn=false;
+                sixes.score=-1;
+                sixes.prospectiveScore=sumWhere(vals,6);
+                sixes.onmouseenter=function()
+                {
+                    if(sixes.prospectiveScore>0&& !sixes.lockedIn)
+                    {
+                        sixes.style="color: white;background: black;";
+                        sixes.innerHTML=alignRight(sixes.prospectiveScore,3);
+                    }
+                };
+                sixes.onmouseleave=function()
+                {
+                    sixes.style="color: black; background: white;";
+                    sixes.innerHTML=alignRight(sixes.score,3);
+                };
+                sixes.onclick=function()
+                {
+                    if(sixes.prospectiveScore>0&& !sixes.lockedIn)
+                    {
+                        sixes.score=sixes.prospectiveScore;
+                        sixes.lockedIn=true;
+                        rollsRemaining=3;
+                        resetDice();
+                    }
+                }
+            }
+            function renderScorecard()
+            {
+                //alert("rendering scorecard")
+                ones.prospectiveScore=sumWhere(vals,1);
+                twos.prospectiveScore=sumWhere(vals,2);
+                threes.prospectiveScore=sumWhere(vals,3);
+                fours.prospectiveScore=sumWhere(vals,4);
+                fives.prospectiveScore=sumWhere(vals,5);
+                sixes.prospectiveScore=sumWhere(vals,6);
+                var scores=[ones.score,twos.score,threes.score,fours.score,fives.score,sixes.score];
+                total.score=sum(scores)-sumWhere(scores,-1);
+                total.innerHTML=alignRight(total.score,3);
+            }
+            function sum(arr)
+            {
+                //alert("in sum function.");
+                var result=0;
+                arr.forEach(num => {
+                    result += num;
+                });
+                return result;
+            }
+            function sumWhere(arr, refNum)
+            {
+                //alert("checking how many "+refNum+"s are in "+arr);
+                //Finds the sum of elements of an array matching the reference value.
+                numToCheck=refNum;
+                return sum(arr.filter(checkEqual));
+            }
+            function checkEqual(num)
+            {
+                return num==numToCheck;
+            }
+            function alignRight(num,width)
+            {
+                //alert("in alignment function.");
+                var result="";
+                var digits=1;
+                if(num>0)
+                {
+                    digits=1+Math.floor(Math.log10(num));
+                }
+                for(var i=0;i<width-digits;i++)
+                {
+                    result+="&nbsp;";
+                }
+                if(num>=0)
+                {
+                    result+=num;
+                }
+                else
+                {
+                    result="&nbsp;-&nbsp;";
+                }
+                return result;
+            }
+        </script>
+        <div class="column">
+            ┏━━━━━━┳━━━┓<br>
+            ┃ Ones ┃<span id="ones">&nbsp;-&nbsp;</span>┃<br>
+            ┣━━━━━━╋━━━┫<br>
+            ┃ Twos ┃<span id="twos">&nbsp;-&nbsp;</span>┃<br>
+            ┣━━━━━━╋━━━┫<br>
+            ┃Threes┃<span id="threes">&nbsp;-&nbsp;</span>┃<br>
+            ┣━━━━━━╋━━━┫<br>
+            ┃Fours ┃<span id="fours">&nbsp;-&nbsp;</span>┃<br>
+            ┣━━━━━━╋━━━┫<br>
+            ┃Fives ┃<span id="fives">&nbsp;-&nbsp;</span>┃<br>
+            ┣━━━━━━╋━━━┫<br>
+            ┃Sixes ┃<span id="sixes">&nbsp;-&nbsp;</span>┃<br>
+            ╞══════╪═══╡<br>
+            ┃Total ┃<span id="total">&nbsp;-&nbsp;</span>┃<br>
+            ┗━━━━━━┻━━━┛
+        </div>
+    </body>
+</html>

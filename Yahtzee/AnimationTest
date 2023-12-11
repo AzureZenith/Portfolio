@@ -1,0 +1,107 @@
+ <!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <style>
+            *{
+                font-family: monospace;
+            }
+        </style>
+    </head>
+
+    <body onload="load()">
+        <script>
+            var animating=false;
+            function load()
+            {
+                //alert("loading");
+
+                //_,.-=~^*'`
+                //A bunch of stuff that didn't work...
+                /*var diacrits[]=[String.fromCharCode(0x0304),String.fromCharCode(0x0331),
+                String.fromCharCode(0x033F)];
+                var frames[]=[0,0,0,0,0,0,0,0,0,0];
+                
+                frames[0]="_/&nbsp;";
+                frames[1]=",/&nbsp;";
+                frames[2]="./&nbsp;";
+                frames[3]="--&nbsp;";
+                frames[4]="=-&nbsp;";
+                frames[5]="~-&nbsp;";
+                frames[6]="^-&nbsp;";
+                frames[7]="*&#92;&nbsp;";
+                frames[8]="'&#92;&nbsp;";
+                frames[9]="`&#92;&nbsp;";
+                //frames[10]=diacrits[0]+" ̀|&nbsp;";
+                //" ̿̿|&nbsp;",
+                //" ̀|`",
+                //"&nbsp;/`",
+                //"&nbsp;/'",
+                //"&nbsp;/*",
+                //"&nbsp;-^",
+                //"&nbsp;-~",
+                //"&nbsp;-=",
+                //"&nbsp;--",
+                //"&nbsp;&#92;.",
+                //"&nbsp;&#92;,",
+                //"&nbsp;&#92;_"
+                //" ̗|_",
+                //" ̳̳|&nbsp;",
+                //"_̖|&nbsp;"*/
+
+                const target=document.getElementById("test");
+                target.onclick=function()
+                {
+                    toggleAnimation();
+                };
+            }
+            function animate()
+            {
+                //alert("animating...");
+                
+                delay(["_/`",",/'","./*","--^","=-~","~-=","^--","*&#92;.","'&#92;,",
+                    "`&#92;_","'&#92;,","*&#92;.","^--","~-=","=-~","--^","./*",",/'"]);
+                setTimeout(function()
+                {
+                    if(animating){animate();}
+                }, 594);
+            }
+            function delay(y)
+            {
+                //alert("delaying: "+y);
+                if(y.length>=1)
+                {
+                    print(y[0]);
+                    //alert("y.length: "+y.length);
+                    if(y.length>1)
+                    {
+                        //alert("setting timeout function...");
+                        setTimeout(function() {
+                            //alert("animating: "+animating);
+                            if(animating)
+                            {
+                                //alert("it was true, right?");
+                                //alert("about to delay: " + y.slice(1,y.length));
+                                delay(y.slice(1,y.length));
+                            }
+                        }, 33);
+                    }
+                }
+            }
+            function toggleAnimation()
+            {
+                //alert("toggling");
+                animating = !animating;
+                if(animating){animate();}
+            }
+            function print(x)
+            {
+                const target=document.getElementById("test");
+                target.innerHTML=x;
+            }
+        </script>
+        <span id="test">x
+        </span>
+    </body>
+</html>
